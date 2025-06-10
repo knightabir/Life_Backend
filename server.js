@@ -2,11 +2,11 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const serverless = require('serverless-http');
 
 // Middleware
 app.use(express.json());
 app.use(cors());
-
 
 // Root route
 app.get('/', (req, res) => {
@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
       'GET /api/users',
       'POST /api/users',
       'GET /api/user?id=1',
-      'PUT /api/user?id=1',
+      'PUT /api/user/user?id=1',
       'DELETE /api/user?id=1'
     ]
   });
@@ -34,8 +34,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-
-
 // For local development
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 3000;
@@ -44,4 +42,5 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-module.exports = app;
+// Export the serverless handler
+module.exports.handler = serverless(app);
